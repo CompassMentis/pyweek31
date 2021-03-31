@@ -9,7 +9,7 @@ class Game:
         self.size = None if self.fullscreen else (settings['screen']['width'], settings['screen']['height'])
 
         self.locations = [location_class.Location(1, self)]
-        self.active_location = self.locations[0]
+        self.active_location = next(location for location in self.locations if location.id == settings['initial_location_id'])
         self.done = False
         self.last_size = None
         self.screen = None

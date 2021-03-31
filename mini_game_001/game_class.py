@@ -1,20 +1,17 @@
 import pygame
 
+from mini_game_class import MiniGame
 
-class Game:
+
+class Game(MiniGame):
     def __init__(self, location):
-        self.canvas = pygame.Surface((900, 900))
+        super().__init__(location)
         self.canvas.fill('Blue')
         self.button = pygame.Rect(100, 100, 150, 200)
         pygame.draw.rect(self.canvas, 'Green', self.button)
-        self.done = False
-        self.location = location
 
     def draw(self):
         return self.canvas
-
-    def update(self):
-        pass
 
     def handle_mouse_event(self, mouse_event):
         if mouse_event.type == pygame.MOUSEBUTTONUP:
@@ -27,6 +24,3 @@ class Game:
             # Clicked the button
             pygame.draw.rect(self.canvas, 'Red', self.button)
             self.done = True
-
-    def handle_key_event(self):
-        pass

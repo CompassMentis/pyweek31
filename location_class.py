@@ -6,6 +6,7 @@ from PIL import Image
 
 class Location:
     def __init__(self, id, game):
+        self.id = id
         self.game = game
         self.path = f'locations/location_{id:03}/'
         self.image_path = f'{self.path}/images/'
@@ -19,10 +20,10 @@ class Location:
             game_area_image.getbbox()[2] - game_area_image.getbbox()[0],
             game_area_image.getbbox()[3] - game_area_image.getbbox()[1]
         )
-        game_id = self.settings.get('game_id')
-        if game_id is not None:
-            assert isinstance(game_id, int)
-            game_name = f'mini_game_{game_id:03}'
+        mini_game_id = self.settings.get('mini_game_id')
+        if mini_game_id is not None:
+            assert isinstance(mini_game_id, int)
+            game_name = f'mini_game_{mini_game_id:03}'
             exec('import ' + game_name)
             self.mini_game = locals()[game_name].Game(self)
 
