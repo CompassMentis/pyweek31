@@ -2,3 +2,6 @@ __pycache__
 *.pyc
 .env
 .idea
+local_settings.py
+Notes.docx
+*.xcf

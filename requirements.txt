@@ -1,1 +1,3 @@
 pygame>=2
+pyyaml
+pillow
