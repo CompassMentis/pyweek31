@@ -1,5 +1,3 @@
-import time
-
 import yaml
 import flatten_dict
 
@@ -27,6 +25,3 @@ def load_settings():
 settings = load_settings()
 game = Game(settings)
 game.run()
-# game.draw()
-#
-# time.sleep(5)

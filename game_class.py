@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 import location_class
@@ -8,7 +10,11 @@ class Game:
         self.fullscreen = settings['screen'].get('fullscreen', False)
         self.size = None if self.fullscreen else (settings['screen']['width'], settings['screen']['height'])
 
-        self.locations = [location_class.Location(1, self)]
+        self.locations = []
+        for name in os.listdir('locations'):
+            if name.startswith('location_'):
+                id = int(name.split('_')[1])
+                self.locations.append(location_class.Location(id, self))
         self.active_location = next(location for location in self.locations if location.id == settings['initial_location_id'])
         self.done = False
         self.last_size = None
