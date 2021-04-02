@@ -1,1 +1,28 @@
 mini_game_id: 3
+grid_start:
+  - . . a a . . .
+  - . . . . . . .
+  - . . . . . . .
+  - . . . . . . .
+  - . . . . . x x
+  - . . . . . x x
+  - . . . . . . .
+#  - . . . . . a a
+#  - b b b . . . c
+#  - . . d . . . c
+#  - . . d . e e e
+#  - x x d . . . .
+#  - x x . . . f f
+#  - . . g g . . .
+tile_images:
+  a: red_car_2x1
+  b: green_car_3x1
+  c: red_car_2x1
+  d: green_car_3x1
+  e: green_car_3x1
+  f: red_car_2x1
+  g: red_car_2x1
+  x: swat_car_2x2
+finish_position:
+  - 5
+  - 2
