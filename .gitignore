@@ -6,4 +6,6 @@ local_settings.yml
 Notes.docx
 *.docx#
 *.xcf
+Pipfile
+Pipfile.lock
 raw_assets
