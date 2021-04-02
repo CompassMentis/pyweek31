@@ -194,6 +194,6 @@ class Game(MiniGame):
                 if button.was_clicked(mouse_position):
                     button.execute()
                     if self.game_finished():
-                        self.done = True
+                        self.game_completion()
                     self.buttons = self.create_buttons()
                     return

@@ -23,4 +23,4 @@ class Game(MiniGame):
 
             # Clicked the button
             pygame.draw.rect(self.canvas, 'Red', self.button)
-            self.done = True
+            self.game_completion()

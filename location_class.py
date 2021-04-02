@@ -10,7 +10,16 @@ class Location:
         self.game = game
         self.path = f'locations/location_{id:03}/'
         self.image_path = f'{self.path}/images/'
+        # TODO: Lazy image loading
         self.background = pygame.image.load(self.image_path + 'background.png')
+        self.map_image = pygame.image.load(self.image_path + 'map.png')
+
+        self.unlocked = False
+        self.next_locations = [
+            game.location_for_id(id)
+            for id in game.settings['location_tree'].get(self.id, [])
+        ]
+
         with open(f'{self.path}settings.yml') as input_file:
             self.settings = yaml.load(input_file, Loader=yaml.Loader)
 

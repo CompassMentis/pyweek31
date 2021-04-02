@@ -22,3 +22,8 @@ class MiniGame:
 
     def handle_key_event(self, key_event):
         pass
+
+    def game_completion(self):
+        self.done = True
+        for location in self.location.next_locations:
+            location.unlocked = True
