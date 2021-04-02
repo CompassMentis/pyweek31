@@ -1,1 +1,28 @@
-mini_game_id: 1
+mini_game_id: 3
+grid_start:
+  - . . a a . . .
+  - . . . . . . .
+  - . . . . . . .
+  - . . . . . . .
+  - . . . . . x x
+  - . . . . . x x
+  - . . . . . . .
+#  - . . . . . a a
+#  - b b . . . . c
+#  - b b d . . . c
+#  - . . d . e e e
+#  - x x d . . . .
+#  - x x . . . f f
+#  - . . g g . . .
+tile_images:
+  a: dark_crate_2x1
+  b: cardboard_box_2x2
+  c: dark_crate_2x1
+  d: light_crate_2x1
+  e: light_crate_2x1
+  f: dark_crate_2x1
+  g: dark_crate_2x1
+  x: red_crate_2x2
+finish_position:
+  - 5
+  - 2

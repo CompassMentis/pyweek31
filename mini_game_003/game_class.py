@@ -4,6 +4,8 @@ import pygame
 
 from mini_game_class import MiniGame
 
+# TODO: Show the target area (green? - see text for location 22)
+
 
 class Button:
     """
