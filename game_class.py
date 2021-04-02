@@ -16,6 +16,8 @@ class Game:
             if name.startswith('location_'):
                 id = int(name.split('_')[1])
                 self.locations.append(location_class.Location(id, self))
+        for location in self.locations:
+            location.set_next_locations()
         self.active_location = next(
             location
             for location in self.locations
@@ -23,7 +25,7 @@ class Game:
         )
         self.active_location.unlocked = True
 
-        self.map_background = pygame.image.load('images/map_background.png')
+        self.map_background = pygame.transform.scale(pygame.image.load('images/map_background.png'), (1920, 1080))
         self.show_map = False
         self.done = False
         self.last_size = None
@@ -70,15 +72,41 @@ class Game:
         if self.game_active:
             self.active_location.handle_key_event(key)
 
+    def map_mouse_pos(self):
+        # TODO: Maybe show map in a smaller area - and change this code
+        x, y = pygame.mouse.get_pos()
+
+        # scale to the window size
+        x = x / self.size[0] * 1920
+        y = y / self.size[1] * 1080
+
+        return x, y
+
+    def click_on_map(self, event):
+        if event.type != pygame.MOUSEBUTTONUP:
+            return
+        locations = [location for location in self.locations if location.mouse_in_area(self.map_mouse_pos())]
+        location = min(locations, key=lambda location: location.map_button_size())
+        if not location.unlocked:
+            return
+
+        self.active_location = location
+
     def handle_mouse_event(self, event):
         if self.game_active:
-            self.active_location.handle_mouse_event(event)
+            if self.show_map:
+                self.click_on_map(event)
+            else:
+                self.active_location.handle_mouse_event(event)
 
     def draw_map(self):
         image = self.map_background.copy()
         for location in self.locations:
             if not location.unlocked:
                 continue
+            if self.active_location == location:
+                # TODO: Room within room - make white when not active
+                pygame.draw.rect(image, 'light green', location.map_button_area)
             image.blit(location.map_image, (0, 0))
         return image
 

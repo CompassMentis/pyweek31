@@ -12,13 +12,14 @@ class Location:
         self.image_path = f'{self.path}/images/'
         # TODO: Lazy image loading
         self.background = pygame.image.load(self.image_path + 'background.png')
-        self.map_image = pygame.image.load(self.image_path + 'map.png')
+        self.map_image = pygame.transform.scale(pygame.image.load(self.image_path + 'map.png'), (1920, 1080))
+
+        # TODO: Convert PIL image to PyGame or vice versa
+        # .. or pre-calculate room boundaries
+        self.map_button_area = self.get_button_area()
 
         self.unlocked = False
-        self.next_locations = [
-            game.location_for_id(id)
-            for id in game.settings['location_tree'].get(self.id, [])
-        ]
+        self.next_locations = []
         self.first_visit = True
         self.show_intro_text = True
         self.intro_text_image = pygame.image.load(self.image_path + 'intro_text.png')
@@ -38,6 +39,28 @@ class Location:
             game_name = f'mini_game_{mini_game_id:03}'
             exec('import ' + game_name)
             self.mini_game = locals()[game_name].Game(self)
+
+    def get_button_area(self):
+        map_image = Image.open(self.image_path + 'map.png').resize((1920, 1080))
+        bbox = map_image.getbbox()
+        margin = 10
+        x, y, width, height = bbox[0] + margin, \
+                              bbox[1] + margin, \
+                              bbox[2] - bbox[0] - margin * 2, \
+                              bbox[3] - bbox[1] - margin * 2
+        return pygame.Rect(x, y, width, height)
+
+    def map_button_size(self):
+        return self.map_button_area[2] * self.map_button_area[3]
+
+    def mouse_in_area(self, mouse_position):
+        return self.map_button_area.collidepoint(*mouse_position)
+
+    def set_next_locations(self):
+        self.next_locations = [
+            self.game.location_for_id(id)
+            for id in self.game.settings['location_tree'].get(self.id, [])
+        ]
 
     def handle_key_event(self, key):
         if self.mini_game:

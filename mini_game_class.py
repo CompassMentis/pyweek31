@@ -26,4 +26,5 @@ class MiniGame:
     def game_completion(self):
         self.done = True
         for location in self.location.next_locations:
-            location.unlocked = True
+            if location is not None:
+                location.unlocked = True
