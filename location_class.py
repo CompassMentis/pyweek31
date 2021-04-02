@@ -19,6 +19,9 @@ class Location:
             game.location_for_id(id)
             for id in game.settings['location_tree'].get(self.id, [])
         ]
+        self.first_visit = True
+        self.show_intro_text = True
+        self.intro_text_image = pygame.image.load(self.image_path + 'intro_text.png')
 
         with open(f'{self.path}settings.yml') as input_file:
             self.settings = yaml.load(input_file, Loader=yaml.Loader)
@@ -65,6 +68,9 @@ class Location:
 
     def draw(self):
         result = self.background.copy()
+
+        if self.show_intro_text:
+            result.blit(self.intro_text_image, (0, 0))
 
         if self.mini_game:
             game_image = self.mini_game.draw()
