@@ -12,11 +12,11 @@ class Location:
         self.image_path = f'{self.path}/images/'
         # TODO: Lazy image loading
         self.background = pygame.image.load(self.image_path + 'background.png')
-        self.map_image = pygame.transform.scale(pygame.image.load(self.image_path + 'map.png'), (1920, 1080))
+        self._map_image = None
 
         # TODO: Convert PIL image to PyGame or vice versa
         # .. or pre-calculate room boundaries
-        self.map_button_area = self.get_button_area()
+        self._map_button_area = None
 
         self.unlocked = False
         self.next_locations = []
@@ -24,21 +24,52 @@ class Location:
         self.show_intro_text = True
         self.intro_text_image = pygame.image.load(self.image_path + 'intro_text.png')
 
-        with open(f'{self.path}settings.yml') as input_file:
-            self.settings = yaml.load(input_file, Loader=yaml.Loader)
+        self._settings = None
+        self._mini_game = None
 
-        game_area_image = Image.open(self.image_path + 'mini_game_area.png')
-        self.settings['game_location'] = game_area_image.getbbox()[0:2]
-        self.settings['game_size'] = (
-            game_area_image.getbbox()[2] - game_area_image.getbbox()[0],
-            game_area_image.getbbox()[3] - game_area_image.getbbox()[1]
-        )
+    def get_mini_game(self):
         mini_game_id = self.settings.get('mini_game_id')
         if mini_game_id is not None:
             assert isinstance(mini_game_id, int)
             game_name = f'mini_game_{mini_game_id:03}'
             exec('import ' + game_name)
-            self.mini_game = locals()[game_name].Game(self)
+            return locals()[game_name].Game(self)
+
+    @property
+    def mini_game(self):
+        if self._mini_game is None:
+            self._mini_game = self.get_mini_game()
+        return self._mini_game
+
+    def load_settings(self):
+        with open(f'{self.path}settings.yml') as input_file:
+            settings = yaml.load(input_file, Loader=yaml.Loader)
+
+        game_area_image = Image.open(self.image_path + 'mini_game_area.png')
+        settings['game_location'] = game_area_image.getbbox()[0:2]
+        settings['game_size'] = (
+            game_area_image.getbbox()[2] - game_area_image.getbbox()[0],
+            game_area_image.getbbox()[3] - game_area_image.getbbox()[1]
+        )
+        return settings
+
+    @property
+    def settings(self):
+        if self._settings is None:
+            self._settings = self.load_settings()
+        return self._settings
+
+    @property
+    def map_image(self):
+        if not self._map_image:
+            self._map_image = pygame.transform.scale(pygame.image.load(self.image_path + 'map.png'), (1920, 1080))
+        return self._map_image
+
+    @property
+    def map_button_area(self):
+        if not self._map_button_area:
+            self._map_button_area = self.get_button_area()
+        return self._map_button_area
 
     def get_button_area(self):
         map_image = Image.open(self.image_path + 'map.png').resize((1920, 1080))

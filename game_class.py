@@ -1,6 +1,7 @@
 import os
 
 import pygame
+pygame.init()
 
 import location_class
 

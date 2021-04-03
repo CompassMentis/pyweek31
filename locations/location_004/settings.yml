@@ -1,1 +1,7 @@
-mini_game_id: 1
+mini_game_id: 4
+size: 3
+starting_position:
+  - . 1 1
+  - 1 1 1
+  - 1 1 -1
+target_code: 0 1 2
